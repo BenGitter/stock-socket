@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
@@ -15,7 +16,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   ],
   imports: [
     BrowserModule,
-    ChartsModule
+    ChartsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

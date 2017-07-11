@@ -21,16 +21,23 @@ exports.getQuoteData = function(quote, callback){
 exports.addQuote = function(quote, callback){
   const _quote = quote.toLowerCase();
   if(quotes.indexOf(_quote) >= 0){
-    return callback(null, "Quote already displayed");
+    return callback(null, false);
   }else{
-    getQuoteData(_quote, (err, data) => {
+    this.getQuoteData(_quote, (err, data) => {
       if(err){
         return callback("Quote doesn't exist", null);
       }else{
+        if(quotes.indexOf(_quote) >= 0){
+          return callback(null, false);
+        }
         quotes.push(_quote);
-        return callback(null, "Quote added");
+        return callback(null, true);
       }
     });
   }
+}
+
+exports.getQuotes = function(){
+  return quotes;
 }
   

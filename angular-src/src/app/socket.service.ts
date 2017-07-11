@@ -9,18 +9,22 @@ export class SocketService {
   socket:any;
 
   constructor() { 
-    console.log("Started SocketService")
-    this.getMessages().subscribe(data => {
-      console.log(data);
+    // Setup socket.io connection
+    this.socket = io(this.url);
+
+    // For testing: emit "new quote" event
+    this.socket.emit("new quote", "MSFT"); 
+
+    // Subscribe to "notification" event
+    this.getNotifications().subscribe(notification => {
+      console.log(notification);
     });
   }
 
-  getMessages() { 
+  getNewQuotes(){ 
     let observable = new Observable(observer => { 
-      this.socket = io(this.url);
-      this.socket.emit("new quote", "MSFT"); 
-      this.socket.on('new quote', (data) => { 
-        observer.next(data); 
+      this.socket.on('new quote', (quote) => { 
+        observer.next(quote); 
       }); 
       return () => { 
         this.socket.disconnect(); 
@@ -29,4 +33,21 @@ export class SocketService {
 
     return observable; 
   } 
+
+  getNotifications(){
+    let observable = new Observable(observer => { 
+      this.socket.on('notification', (notification) => { 
+        observer.next(notification); 
+      }); 
+      return () => { 
+        this.socket.disconnect(); 
+      }; 
+    });
+
+    return observable; 
+  }
+
+  addNewQuote(quote){
+    this.socket.emit("new quote", quote);
+  }
 }
