@@ -18,8 +18,8 @@ export class SocketService {
   getMessages() { 
     let observable = new Observable(observer => { 
       this.socket = io(this.url);
-      this.socket.emit("msg", "HI"); 
-      this.socket.on('msg', (data) => { 
+      this.socket.emit("new quote", "MSFT"); 
+      this.socket.on('new quote', (data) => { 
         observer.next(data); 
       }); 
       return () => { 

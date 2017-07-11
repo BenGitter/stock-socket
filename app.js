@@ -1,7 +1,6 @@
 // Dependencies
 const express = require("express");
 const path = require("path");
-const request = require("request");
 
 // Server
 const app = express();
@@ -9,32 +8,29 @@ const http = require("http").Server(app);
 const port = 3000;
 
 // Load Socket logic
-require("./socket")(http);
+require("./controllers/socket")(http);
 
-
-// Load and save API key
-require("dotenv").load();
-const apiKey = process.env.APIKEY;
+// Load Stock logic
+const stock = require("./controllers/stock");
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
 
 // API: get quote data
-app.get("/api/quote/:id", (req, res) => {
-  const id = req.params.id;
+app.get("/api/quote/:quote", (req, res) => {
+  const quote = req.params.quote;
 
-  request(`http://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${id}&apikey=${apiKey}`, (err, data) => {
-    if(JSON.parse(data.body)["Error Message"]){
-      res.json({success: false, error: JSON.parse(data.body)["Error Message"]});
+  stock.getQuoteData(quote, (err, data) => {
+    if(err){
+      res.json({success: false, error: err});
     }else{
-      res.json({success: true, data: JSON.parse(data.body)})
+      res.json({success: true, data: data})
     }
-  })
+  });
 });
 
 // Load Angular frontend 
 app.get("*", (req, res, next) => {
-  if(req.url.indexOf("socket") !== -1) return next();
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 

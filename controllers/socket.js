@@ -8,9 +8,8 @@ module.exports = function(http){
       console.log("User disconnected");
     });
 
-    socket.on("msg", (msg) => {
-      console.log(msg);
+    socket.on("new quote", (quote) => {
+      io.emit("new quote", quote);
     });
   });
-
 };
