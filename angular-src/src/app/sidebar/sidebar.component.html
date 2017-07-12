@@ -1,12 +1,24 @@
 <div class="container">
-  <div *ngFor="let quote of quotes" class="quote">
-    {{ quote }}
+  <div class="quotes-container">
+    <div *ngFor="let quote of quotes" class="quote-wrap">
+      <div class="quote">
+        {{ quote }}
+      </div>
+    </div>
   </div>
+  
 
-  <div class="add_quote">
+  <!--<div class="add_quote">
     <form (submit)="onSubmit($event)">
       <input type="text" name="newQuote" [(ngModel)]="newQuote">
       <input type="submit" value="Submit">
+    </form>
+  </div>-->
+
+  <div class="add-quote quote-wrap">
+    <form (submit)="onSubmit($event)">
+      <input type="text" placeholder="Quote" name="newQuote" [(ngModel)]="newQuote">
+      <input type="submit" value="+">
     </form>
   </div>
 </div>
