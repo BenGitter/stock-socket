@@ -19,7 +19,7 @@ exports.getQuoteData = function(quote, callback){
 }
 
 exports.addQuote = function(quote, callback){
-  const _quote = quote.toLowerCase();
+  const _quote = quote.toUpperCase();
   if(quotes.indexOf(_quote) >= 0){
     return callback(null, false);
   }else{

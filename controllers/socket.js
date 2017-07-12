@@ -21,7 +21,7 @@ module.exports = function(http){
         if(err){
           socket.emit("notification", "Quote doesn't exist");
         }else if(isAdded){
-          io.emit("new quote", quote.toLowerCase());
+          io.emit("new quote", quote.toUpperCase());
         }else{
           socket.emit("notification", "Quote already displayed");
         }
