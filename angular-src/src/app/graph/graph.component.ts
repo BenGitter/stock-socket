@@ -12,6 +12,10 @@ export class GraphComponent implements OnInit {
     data: [1,2,3]
   }];
   chartLabels = ["a", "b", "c"];
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
 
   constructor() { }
 

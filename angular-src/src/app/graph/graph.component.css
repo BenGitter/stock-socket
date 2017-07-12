@@ -2,10 +2,6 @@
   width: 100vw;
   height: calc(100vh - 100px);
   background: #EFEFEF;
-  padding: 0 10%;
+  padding: 20px 10%;
   box-sizing: border-box;
-}
-
-canvas{
-  max-height: 100%;
 }
