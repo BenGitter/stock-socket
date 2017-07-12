@@ -10,12 +10,18 @@ import { SocketService } from '../socket.service';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   newQuotesSub:Subscription;
+  notificationSub:Subscription;
   quotes:Array<string> = [];
   newQuote:string = "";
 
   constructor(public socketService:SocketService) { }
 
   ngOnInit() {
+    // Subscribe to "notification" event
+    this.notificationSub = this.socketService.getNotifications().subscribe(notification => {
+      alert(notification);
+    });
+
     // Subscribe to "new quote" event
     this.newQuotesSub = this.socketService.getNewQuotes().subscribe(quote => {
       this.quotes.push(quote.toString());
@@ -32,6 +38,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.newQuotesSub.unsubscribe();
+    this.notificationSub.unsubscribe();
   }
 
 }

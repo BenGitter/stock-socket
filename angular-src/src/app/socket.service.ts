@@ -11,14 +11,6 @@ export class SocketService {
   constructor() { 
     // Setup socket.io connection
     this.socket = io(this.url);
-
-    // For testing: emit "new quote" event
-    this.socket.emit("new quote", "MSFT"); 
-
-    // Subscribe to "notification" event
-    this.getNotifications().subscribe(notification => {
-      console.log(notification);
-    });
   }
 
   getNewQuotes(){ 
