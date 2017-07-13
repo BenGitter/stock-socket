@@ -37,6 +37,18 @@ exports.addQuote = function(quote, callback){
   }
 }
 
+exports.deleteQuote = function(quote, callback){
+  const _quote = quote.toUpperCase();
+  const index = quotes.indexOf(_quote);
+
+  if(index >= 0){
+    quotes.splice(index,1);
+    return callback(null, true);
+  }else{
+    return callback(null, false);
+  }
+}
+
 exports.getQuotes = function(){
   return quotes;
 }

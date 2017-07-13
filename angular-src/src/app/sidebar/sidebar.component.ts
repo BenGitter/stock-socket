@@ -10,6 +10,7 @@ import { SocketService } from '../socket.service';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   newQuotesSub:Subscription;
+  deletedQuotesSub:Subscription;
   notificationSub:Subscription;
   quotes:Array<string> = [];
   newQuote:string = "";
@@ -24,7 +25,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     // Subscribe to "new quote" event
     this.newQuotesSub = this.socketService.getNewQuotes().subscribe(quote => {
-      this.quotes.push(quote.toString());
+      this.quotes.push(<string> quote);
+    });
+
+    // Subscribe to "delete quote" event
+    this.deletedQuotesSub = this.socketService.getDeletedQuotes().subscribe(quote => {
+      const index = this.quotes.indexOf(<string> quote);
+      if(index >= 0){
+        this.quotes.splice(index, 1);
+      }
     });
   }
 
@@ -36,8 +45,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
+  onDelete(quote:string){
+    this.socketService.deleteQuote(quote);
+  }
+
   ngOnDestroy(){
     this.newQuotesSub.unsubscribe();
+    this.deletedQuotesSub.unsubscribe();
     this.notificationSub.unsubscribe();
   }
 

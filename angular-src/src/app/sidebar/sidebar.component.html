@@ -2,18 +2,15 @@
   <div class="quotes-container">
     <div *ngFor="let quote of quotes" class="quote-wrap">
       <div class="quote">
-        {{ quote }}
+        <div class="standard">
+          {{ quote }}
+        </div>
+        <div class="hover" (click)="onDelete(quote)">
+          X
+        </div>
       </div>
     </div>
   </div>
-  
-
-  <!--<div class="add_quote">
-    <form (submit)="onSubmit($event)">
-      <input type="text" name="newQuote" [(ngModel)]="newQuote">
-      <input type="submit" value="Submit">
-    </form>
-  </div>-->
 
   <div class="add-quote quote-wrap">
     <form (submit)="onSubmit($event)">

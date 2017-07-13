@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import * as Chart from 'chart.js';
 
@@ -10,8 +10,9 @@ import { StockService } from '../stock.service';
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.css']
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnInit, OnDestroy {
   newQuotesSub:Subscription;
+  deletedQuotesSub:Subscription;
   chart:Chart;
 
   xAxisLength:number = 0;
@@ -44,16 +45,14 @@ export class GraphComponent implements OnInit {
       }
     });
 
-    // Test updating chart
-    // setTimeout(() => {
-    //   const color = this.getRandomColor();
-    //   this.chart.data.datasets.push({label: "Test", data:[1,2,3], borderColor: color, fill: false});
-    //   this.chart.update();
-    // }, 1000);
-
     // Subscribe to "new quote" event
     this.newQuotesSub = this.socketService.getNewQuotes().subscribe(quote => {
-      this.handleNewQuote(<string>quote);
+      this.handleNewQuote(<string> quote);
+    });
+
+    // Subscribe to "delete quote" event
+    this.deletedQuotesSub = this.socketService.getDeletedQuotes().subscribe(quote => {
+      this.handleDeleteQuote(<string> quote);
     });
   }
 
@@ -64,6 +63,22 @@ export class GraphComponent implements OnInit {
     const b = Math.random()*255;
 
     return `rgb(${r},${g},${b})`;
+  }
+
+  handleDeleteQuote(quote:string){
+    let index;
+    for(let i = 0; i < this.chart.data.datasets.length; i++){
+      const dataset = this.chart.data.datasets[i];
+      if(dataset.label === quote){    
+        index = i;
+        break;
+      }
+    }
+
+    if(index >= 0){
+      this.chart.data.datasets.splice(index,1);
+      this.chart.update();
+    }
   }
 
   handleNewQuote(quote:string){
@@ -123,5 +138,8 @@ export class GraphComponent implements OnInit {
     })
   }
 
-
+  ngOnDestroy(){
+    this.newQuotesSub.unsubscribe();
+    this.deletedQuotesSub.unsubscribe();
+  }
 }

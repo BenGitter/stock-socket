@@ -29,5 +29,15 @@ module.exports = function(http){
         console.log(stock.getQuotes());
       })
     });
+
+    socket.on("delete quote", (quote) => {
+      stock.deleteQuote(quote, (err, isDeleted) => {
+        if(err){
+          socket.emit("notification", "Error occured");
+        }else if(isDeleted){
+          io.emit("delete quote", quote.toUpperCase());
+        }
+      });
+    });
   });
 };

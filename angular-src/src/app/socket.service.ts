@@ -26,6 +26,19 @@ export class SocketService {
     return observable; 
   } 
 
+  getDeletedQuotes(){
+    let observable = new Observable(observer => { 
+      this.socket.on('delete quote', (quote) => { 
+        observer.next(quote); 
+      }); 
+      return () => { 
+        this.socket.disconnect(); 
+      }; 
+    });
+
+    return observable; 
+  }
+
   getNotifications(){
     let observable = new Observable(observer => { 
       this.socket.on('notification', (notification) => { 
@@ -41,5 +54,9 @@ export class SocketService {
 
   addNewQuote(quote){
     this.socket.emit("new quote", quote);
+  }
+
+  deleteQuote(quote){
+    this.socket.emit("delete quote", quote);
   }
 }
