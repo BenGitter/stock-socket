@@ -42,5 +42,5 @@
 /angular-src/Thumbs.db
 
 /node_modules
-/public
+/angular-src
 .env
