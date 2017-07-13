@@ -84,14 +84,14 @@ export class GraphComponent implements OnInit, OnDestroy {
   handleNewQuote(quote:string){
     this.stockService.getQuoteData(quote).subscribe(json => {
       const series = json.data["Weekly Time Series"];
-      const key_series = Object.keys(series);
+      const key_series = Object.keys(series).reverse();
       const length = key_series.length;
 
 
       // Update X axis
       if(this.xAxisLength < length){
         this.xAxisLength = length;
-        this.chart.data.labels = key_series.reverse();
+        this.chart.data.labels = key_series;
         const last = <string>this.chart.data.labels[length-1];
         this.chart.data.labels[length-1] = last.split(" ")[0];
         this.chart.update();

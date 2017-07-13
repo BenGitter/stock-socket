@@ -6,7 +6,7 @@ require("dotenv").load();
 const apiKey = process.env.APIKEY;
 
 // Array with quotes
-let quotes = [];
+let quotes = ["MSFT", "AAPL"];
 
 exports.getQuoteData = function(quote, callback){
   request(`http://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=${quote}&apikey=${apiKey}`, (err, data) => {
