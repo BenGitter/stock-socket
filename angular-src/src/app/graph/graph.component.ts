@@ -119,8 +119,6 @@ export class GraphComponent implements OnInit, OnDestroy {
       for(let i = (this.xAxisLength-length); i < this.xAxisLength-1; i++){
         _data.push(series[key_series[i-(this.xAxisLength-length)]]["4. close"]);
       }
-
-      console.log(_data);
       
       this.chart.data.datasets.push({
         label: quote, 
@@ -131,11 +129,7 @@ export class GraphComponent implements OnInit, OnDestroy {
         pointRadius: 0
       });
       this.chart.update();
-
-
-      console.log(json);
-      console.log(Object.keys(json.data["Weekly Time Series"]).length)
-    })
+    });
   }
 
   ngOnDestroy(){
